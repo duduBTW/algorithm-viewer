@@ -1,0 +1,28 @@
+package components
+
+type AllAlgorithmsIds struct {
+	CardContainer string
+}
+
+type AlgorithmCardData struct {
+	Name      string
+	Miniature string
+}
+
+var ids = AllAlgorithmsIds{
+	CardContainer: "card-container",
+}
+
+templ AllAlgorithms() {
+	<div>
+		for _, page := range AllAlgorithmsPages {
+			@Card(page)
+		}
+	</div>
+}
+
+templ Card(page Page) {
+	<div id={ ids.CardContainer } data-pageid={ page.Id }>
+		<h2>{ page.Title }</h2>
+	</div>
+}

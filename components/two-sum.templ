@@ -1,0 +1,38 @@
+package components
+
+type TwoSumAlgorithmsIds struct {
+	DemoContainer string
+}
+
+var TwoSumIds = TwoSumAlgorithmsIds{
+	DemoContainer: "two-sum-demo-container",
+}
+
+templ TwoSum() {
+	<div>
+		<h1>Two sum</h1>
+		<h2>Demo</h2>
+		<div id={ TwoSumIds.DemoContainer }></div>
+		<h2>Problem Statement</h2>
+		<p>
+			Given an array of integers nums and an integer target, return the indices of 
+			the two numbers such that they add up to the target. 
+			You may assume that each input has exactly one solution, 
+			and you may not use the same element twice. Return the answer in an array of 
+			two indices in any order.
+		</p>
+		<p>
+			You can return the indices in any order.
+		</p>
+		<h3>Example</h3>
+		<h4>Input:</h4>
+		<code>
+			nums = [2, 7, 11, 15]
+			target = 9
+		</code>
+		<h4>Output:</h4>
+		<code>
+			[0, 1]
+		</code>
+	</div>
+}

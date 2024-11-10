@@ -1,0 +1,27 @@
+package components
+
+const ROOT_ID = "root"
+
+templ Index(body templ.Component) {
+	<html>
+		<head>
+			<meta charset="utf-8"/>
+			<script src="/public/wasm_exec.js"></script>
+			<link href="/public/output.css" rel="stylesheet"/>
+			<script>
+        const go = new Go();
+        WebAssembly.instantiateStreaming(
+          fetch("/public/lib.wasm"),
+          go.importObject
+        ).then((result) => {
+          go.run(result.instance);
+        });
+      </script>
+		</head>
+		<body>
+			<div id={ ROOT_ID }>
+				@body
+			</div>
+		</body>
+	</html>
+}
