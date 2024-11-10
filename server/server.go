@@ -14,7 +14,7 @@ func main() {
 
 	// ROUTE HANDLERS
 	http.Handle("/", templ.Handler(components.Index(components.AllAlgorithms())))
-	for _, page := range components.AllAlgorithmsPages {
+	for _, page := range components.ServerAllAlgorithmsPages {
 		http.Handle(page.Url(), templ.Handler(components.Index(page.Component())))
 	}
 

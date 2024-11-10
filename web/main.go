@@ -91,8 +91,20 @@ func main() {
 
 	js.Global().Set("TABLE_CONTAINER_ID", js.ValueOf(TABLE_CONTAINER_ID))
 
-	components.AllAlgorithmsController()
-	components.BynaryTreeController()
+	// components.AllAlgorithmsController()
+	// components.BynaryTreeController()
+
+	currentURL := js.Global().Get("window").Get("location").Get("href").String()
+	pathParts := strings.Split(currentURL, "/")
+	lastPart := pathParts[len(pathParts)-1]
+
+	for _, page := range components.ClientAllAlgorithmsPages {
+		if lastPart != page.Id {
+			continue
+		}
+
+		page.Component.Render()
+	}
 
 	select {}
 }

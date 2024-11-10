@@ -19,16 +19,17 @@ func AllAlgorithmsController() {
 		}
 
 		pageId := rawPageId.String()
-		targetPageIndex := slices.IndexFunc(AllAlgorithmsPages, func(page Page) bool { return page.Id == pageId })
+		targetPageIndex := slices.IndexFunc(ClientAllAlgorithmsPages, func(page Page) bool { return page.Id == pageId })
 		if targetPageIndex == -1 {
 			return nil
 		}
 
-		for _, component := range GlobalComponentRegistry.components {
-			component.CleanupFn()
+		for _, cleanUpFnPointer := range GlobalComponentRegistry.cleanUpFns {
+			cleanUpFn := *cleanUpFnPointer
+			cleanUpFn()
 		}
 
-		targetPage := AllAlgorithmsPages[targetPageIndex]
+		targetPage := ClientAllAlgorithmsPages[targetPageIndex]
 
 		componentHTML := new(strings.Builder)
 		targetPage.Component().Render(context.Background(), componentHTML)

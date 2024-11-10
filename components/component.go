@@ -12,30 +12,32 @@ import (
 )
 
 type ComponentRegistry struct {
-	components []*BaseComponent
+	cleanUpFns []*func()
 }
 
 var GlobalComponentRegistry = &ComponentRegistry{}
 
-func (componentRegistry *ComponentRegistry) Register(component *BaseComponent) {
-	componentRegistry.components = append(componentRegistry.components, component)
+func (componentRegistry *ComponentRegistry) Register(cleanUpFn *func()) {
+	componentRegistry.cleanUpFns = append(componentRegistry.cleanUpFns, cleanUpFn)
 }
 
 type BaseComponent struct {
 	Target    string
 	Component templ.Component
-	CleanupFn func()
-	SetupFn   func()
+	SetupFn   func(reRender func()) func()
 }
 
 func (base BaseComponent) Render() {
 	target := js.Global().Get("document").Call("querySelector", base.Target)
 
-	componentHTML := new(strings.Builder)
-	base.Component.Render(context.Background(), componentHTML)
+	var reRender = func() {
+		componentHTML := new(strings.Builder)
+		base.Component.Render(context.Background(), componentHTML)
 
-	target.Set("innerHTML", componentHTML.String())
+		target.Set("innerHTML", componentHTML.String())
+	}
 
-	base.SetupFn()
-	GlobalComponentRegistry.Register(&base)
+	reRender()
+	cleanUp := base.SetupFn(reRender)
+	GlobalComponentRegistry.Register(&cleanUp)
 }
